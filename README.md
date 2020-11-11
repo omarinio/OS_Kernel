@@ -1,5 +1,4 @@
 # concurrent_CW2
-go to stage3 branch
 
 make launch-qemu
 
