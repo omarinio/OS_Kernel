@@ -1,0 +1,133 @@
+-------------------------------------------------------------------------------
+
+1. Instructions
+
+- replace any [...] with free text,
+  and
+- replace the [?] with an X if you have completed that stage,
+- replace the [?] with an * if you have attempted that stage, but you know
+  it doesn't work completely; document why you think it doesn't work, plus
+  what you would do to fix the problem, at the end of the marksheet.
+
+-------------------------------------------------------------------------------
+
+2. Information
+
+So that we can calibrate and improve the assignment in the future, give us
+a rough idea how long (in hours) you spent on it *in total*:
+
+effort : [80] hours
+
+-------------------------------------------------------------------------------
+
+3. Citation
+
+Clearly it might have an influence on your mark, but the use of third-party
+resources is allowed *iff.* it
+
+- hasn't been explicitly prohibited by the assignment description, *and*
+- is correctly cited.
+
+Let us know any third-party source code or resources you used (if any) so
+it's clear what's your work and what isn't:
+
+[https://github.com/dhepper/font8x8 
+
+used for 8x8 font for LCD display]
+
+-------------------------------------------------------------------------------
+
+4. Marking
+
+The following gives a stage-by-stage description of the assignment marking
+scheme.  Note this acts as an indicative guideline only, including weights
+for each more obvious aspect (e.g., functional correctness); other aspects
+outside this list can warrant an increase/decrease in marks, with examples
+including hard to quantify features such as style, efficiency, robustness, 
+generality, or realism of a solution.  Put another way, identifying then
+reasoning about these latter aspects forms part of the assessment, so they
+are not (necessarily) detailed explicitly.
+
+    Stage 1 : a baseline kernel
+[X]           - pre-emptive multi-tasking                            ( 30%)
+[X]           - priority-based scheduler                             ( 10%)
+
+    Stage 2 : closed generalisations and enhancements
+[X]           - fork, exec, and exit system calls                    ( 15%)
+[X]           - Inter-Process Communication (IPC)                    ( 15%)
+
+    Stage 3 : open   generalisations and enhancements                ( 30%)
+[?]           - MMU-based protection and virtualisation
+                *OR*
+[X]           - LCD screen and PS/2 device drivers and GUI
+                *OR*
+[?]           - file system based on simplified, emulated disk
+                *OR*
+[?]           - kernel port to real, physical hardware                     
+
+                                                                     ------
+                                                                     (100%)
+
+-------------------------------------------------------------------------------
+
+5. Documentation
+
+Any other documentation, notes or comments that you think are important or
+might be easy to overlook (e.g., a subtle issue or technique in associated
+source code) should go here:
+
+[Stage1:
+
+Implemented a scheduler to check which process to execute next based on process 
+priority. It works by looping through all currently executing processes and 
+adding the age of the process to the initial priority given. It then checks if 
+the process has greater priority than the current max, if so it is then set to 
+new max to be executed next. Once a max is found, all processes have their age 
+increased by one and the process to be executed has its age set to 0.
+
+To improve this scheduler I would have attempted to implement a multi level 
+scheduler however my solution seemed efficient.
+
+Stage2:
+
+For the philosopher problem I implemented pipes for the solution. I implemented 
+four svc calls, SYS_CREATE_PIPE, SYS_CLOSE_PIPE, SYS_READ_PIPE and SYS_WRITE_PIPE.
+I created a new struct in hilevel.h for the pipes. My philosopher solution takes 
+2 groups of philosophers which alternate between eating and thinking. Their action 
+is sent to them through the pipes depending on their previous action.
+
+Stage3:
+
+For the extension task I had chosen the LCD Screen and PS/2 functionality. My aim 
+was to create a display that would update depending on which processes are executing
+as well as being able to execute programs using the mouse and key presses.
+
+I wrote a function which drew rectangles in order to display the buttons as well as 
+the status of the process. My image of the mouse was made by assigning an array 
+with values of 0, 1 and 2 which determined whether the pixel is to be empty, black
+or white. For the font I found a basic 8x8 font on github. I wrote a function that 
+printed a chosen character. In order to write out a string I had called the function 
+to print a character depending on the strlen of the string. I shifted the start of each
+new character by 8 as each character had a width of 8.
+
+In order to update the mouse, I was given 3 bits from the interrupt: the current 
+status of the cursor, change in x and change in y. To handle mouse movements, I paste 
+the previously saved image under the mouse onto the frame buffer. I then check if the 
+mouse is within bounds of the frame buffer and change the position of the mouse based
+on the bits given previously. I then save the image of where the mouse will move to
+before actually drawing the mouse.
+
+To handle mouse clicks, I check if the status of the mouse is clicked or not. If it is,
+I check if the mouse click was within the bounds of where the buttons are drawn. If so,
+the corresponding program is executed.
+
+To handle keypresses, I take the bit given from the interrupt and decode whether the 
+keypress is one of the keypresses that will execute a program. In order to check this, 
+I use a switch statement with linux keyboard scan codes. If the corresponding scan code 
+is read, it will execute the correct program (I was using a mac to write the kernel 
+so I had some problems with the scan codes being incorrectly detected).
+ 
+
+]
+
+-------------------------------------------------------------------------------
